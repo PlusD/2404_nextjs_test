@@ -1,0 +1,6 @@
+{
+  "name": "2404_nextjs_test",
+  "volta": {
+    "node": "20.12.2"
+  }
+}
