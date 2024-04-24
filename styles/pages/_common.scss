@@ -1,0 +1,5 @@
+@use "./../includes/val" as v;
+html, body {
+  color: v.$color-black;
+  font-size: 16px;
+}

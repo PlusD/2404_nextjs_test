@@ -15,6 +15,8 @@ import { getAllPostsWithSlug, getPostAndMorePosts } from "../../lib/api";
 import { CMS_NAME } from "../../lib/constants";
 
 export default function Post({ post, posts, preview }) {
+  console.log({ post, posts, preview });
+  
   const router = useRouter();
   const morePosts = posts?.edges;
 
@@ -67,13 +69,16 @@ export const getStaticProps: GetStaticProps = async ({
   preview = false,
   previewData,
 }) => {
+  console.log({ params, preview, previewData });
+  
   const data = await getPostAndMorePosts(params?.slug, preview, previewData);
-
+  console.log({ data });
+  
   return {
     props: {
       preview,
-      post: data.post,
-      posts: data.posts,
+      post: data.news,
+      posts: data.allNews,
     },
     revalidate: 10,
   };
@@ -83,7 +88,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const allPosts = await getAllPostsWithSlug();
 
   return {
-    paths: allPosts.edges.map(({ node }) => `/posts/${node.slug}`) || [],
+    paths: allPosts.edges.map(({ node }) => `/news/${node.slug}`) || [],
     fallback: true,
   };
 };

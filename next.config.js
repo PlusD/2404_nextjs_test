@@ -9,6 +9,8 @@ const { protocol, hostname, port, pathname } = new URL(
   process.env.WORDPRESS_API_URL,
 );
 
+const path = require('path');
+
 /** @type {import('next').NextConfig} */
 module.exports = {
   images: {
@@ -20,5 +22,8 @@ module.exports = {
         pathname: `${pathname}/**`,
       },
     ],
+  },
+  sassOptions: {
+    includePaths: [path.join(__dirname, 'styles')],
   },
 };

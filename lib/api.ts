@@ -1,3 +1,5 @@
+import { POST_PER_PAGE } from "./constants";
+
 const API_URL = process.env.WORDPRESS_API_URL;
 
 async function fetchAPI(query = "", { variables }: Record<string, any> = {}) {
@@ -26,6 +28,7 @@ async function fetchAPI(query = "", { variables }: Record<string, any> = {}) {
   }
   return json.data;
 }
+
 
 export async function getPreviewPost(id, idType = "DATABASE_ID") {
   const data = await fetchAPI(
@@ -59,11 +62,63 @@ export async function getAllPostsWithSlug() {
   return data?.posts;
 }
 
-export async function getAllPostsForHome(preview) {
+export async function getAllPostsForHome(preview, $last = null, $after = null, $before = null) {
   const data = await fetchAPI(
     `
     query AllPosts {
-      posts(first: 20, where: { orderby: { field: DATE, order: DESC } }) {
+      posts(
+        first: ${POST_PER_PAGE},
+        last: ${$last},
+        after: ${$after},
+        before: ${$before},
+        where: {orderby: {field: MENU_ORDER, order: ASC}}
+      ) {
+        edges {
+          node {
+            title
+            excerpt
+            slug
+            date
+            featuredImage {
+              node {
+                sourceUrl
+              }
+            }
+            author {
+              node {
+                name
+                firstName
+                lastName
+                avatar {
+                  url
+                }
+              }
+            }
+          }
+        }
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+        }
+      }
+    }
+  `,
+    {
+      variables: {
+        onlyEnabled: !preview,
+        preview,
+      },
+    },
+  );
+
+  return data?.posts;
+}
+export async function getAllNewsForHome(preview) {
+  const data = await fetchAPI(
+    `
+    query GetNewsQuery {
+      news {
         edges {
           node {
             title
@@ -97,8 +152,8 @@ export async function getAllPostsForHome(preview) {
       },
     },
   );
-
-  return data?.posts;
+  
+  return data?.news;
 }
 
 export async function getPostAndMorePosts(slug, preview, previewData) {

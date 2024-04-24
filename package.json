@@ -15,11 +15,16 @@
     "next": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "the-new-css-reset": "^1.11.2",
     "typescript": "^4.7.4"
   },
   "devDependencies": {
     "autoprefixer": "10.4.7",
     "postcss": "8.4.31",
+    "sass": "^1.75.0",
     "tailwindcss": "^3.0.24"
+  },
+  "volta": {
+    "node": "20.12.2"
   }
 }
