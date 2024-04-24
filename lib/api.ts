@@ -1,3 +1,5 @@
+import { POST_PER_PAGE, QUERY_ARCHIVE_POST } from "./constants";
+
 const API_URL = process.env.WORDPRESS_API_URL;
 
 async function fetchAPI(query = "", { variables }: Record<string, any> = {}) {
@@ -63,30 +65,8 @@ export async function getAllPostsForHome(preview) {
   const data = await fetchAPI(
     `
     query AllPosts {
-      posts(first: 20, where: { orderby: { field: DATE, order: DESC } }) {
-        edges {
-          node {
-            title
-            excerpt
-            slug
-            date
-            featuredImage {
-              node {
-                sourceUrl
-              }
-            }
-            author {
-              node {
-                name
-                firstName
-                lastName
-                avatar {
-                  url
-                }
-              }
-            }
-          }
-        }
+      posts(first: 20, where: { orderby: { field: MENU_ORDER, order: ASC } }) {
+        ${QUERY_ARCHIVE_POST}
       }
     }
   `,
@@ -208,5 +188,44 @@ export async function getPostAndMorePosts(slug, preview, previewData) {
   // If there are still 3 posts, remove the last one
   if (data.posts.edges.length > 2) data.posts.edges.pop();
 
+  return data;
+}
+
+// アーカイブのリスト及びページネーションを取得
+export async function getArchivePostAndPagenation(postType, offsetPagination) {
+  const query = `
+  query Archives($offsetPagination: Int) {
+    ${postType}(
+      where: { offsetPagination: { offset: $offsetPagination, size: ${POST_PER_PAGE} } }
+    ) {
+      ${QUERY_ARCHIVE_POST}
+      pageInfo {
+        offsetPagination {
+          total
+        }
+      }
+    }
+  }
+  `;
+
+  const data = await fetchAPI(query, { offsetPagination });
+  
+  return data;
+}
+export async function getArchivePath(postType) {
+  const query = `
+  query Archives {
+    ${postType} {
+      pageInfo {
+        offsetPagination {
+          total
+        }
+      }
+    }
+  }
+  `;
+
+  const data = await fetchAPI(query);
+  
   return data;
 }
