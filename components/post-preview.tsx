@@ -10,7 +10,6 @@ export default function PostPreview({
   excerpt,
   author,
   slug,
-  postType,
 }) {
   return (
     <div>
@@ -21,7 +20,7 @@ export default function PostPreview({
       </div>
       <h3 className="text-3xl mb-3 leading-snug">
         <Link
-          href={`/${postType}/${slug}`}
+          href={`/posts/${slug}`}
           className="hover:underline"
           dangerouslySetInnerHTML={{ __html: title }}
         ></Link>
