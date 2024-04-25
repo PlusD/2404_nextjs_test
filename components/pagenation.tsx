@@ -5,6 +5,7 @@ export default function Pagenation({ pageInfo, currentPage, path }) {
   const sequence = Array.from({ length: totalPage }, (_, i) => i + 1);
   return (
     <div>
+      {/* currentPageが1 */}
       {currentPage !== 1 && (
         <a href={`/${path}/page/${currentPage - 1}`}>前へ</a>
       )}

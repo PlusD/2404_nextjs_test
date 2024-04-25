@@ -21,4 +21,12 @@ module.exports = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/posts',
+        destination: '/posts/page/1',
+      },
+    ]
+  },
 };

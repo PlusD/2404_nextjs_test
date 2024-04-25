@@ -4,26 +4,36 @@ import { POST_TYPE_POSTS } from "../../../lib/constants";
 import PostPreview from "../../../components/post-preview";
 import Pagenation from "../../../components/pagenation";
 import { POST_PER_PAGE } from "../../../lib/constants";
+import Layout from "../../../components/layout";
+import Head from "next/head";
+import Container from "../../../components/container";
 
 export default function Archive({ posts, pageInfo, currentPage, preview }) {
   return (
-    <section>
-      <h2>一覧</h2>
-      <div>
-      {posts.map(({ node }) => (
-        <PostPreview
-          key={node.slug}
-          title={node.title}
-          coverImage={node.featuredImage}
-          date={node.date}
-          author={node.author}
-          slug={node.slug}
-          excerpt={node.excerpt}
-        />
-        ))}
-      </div>
-      <Pagenation pageInfo={pageInfo} currentPage={currentPage} path={POST_TYPE_POSTS} />
-    </section>
+    <Layout preview={preview}>
+      <Head>
+        <title>一覧ページ</title>
+      </Head>
+      <Container>
+        <section>
+          <h2>一覧</h2>
+          <div>
+          {posts.map(({ node }) => (
+            <PostPreview
+              key={node.slug}
+              title={node.title}
+              coverImage={node.featuredImage}
+              date={node.date}
+              author={node.author}
+              slug={node.slug}
+              excerpt={node.excerpt}
+            />
+            ))}
+          </div>
+          <Pagenation pageInfo={pageInfo} currentPage={currentPage} path={POST_TYPE_POSTS} />
+        </section>
+      </Container>
+    </Layout>
   );
 }
 

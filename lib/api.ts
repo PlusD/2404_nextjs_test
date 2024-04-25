@@ -2,7 +2,7 @@ import { POST_PER_PAGE, QUERY_ARCHIVE_POST } from "./constants";
 
 const API_URL = process.env.WORDPRESS_API_URL;
 
-async function fetchAPI(query = "", { variables }: Record<string, any> = {}) {
+async function fetchAPI(query = "", {variables}: Record<string, any> = {}) {
   const headers = { "Content-Type": "application/json" };
 
   if (process.env.WORDPRESS_AUTH_REFRESH_TOKEN) {
@@ -196,7 +196,7 @@ export async function getArchivePostAndPagenation(postType, offsetPagination) {
   const query = `
   query Archives($offsetPagination: Int) {
     ${postType}(
-      where: { offsetPagination: { offset: $offsetPagination, size: ${POST_PER_PAGE} } }
+      ${offsetPagination !== null ? `where: { offsetPagination: { offset: $offsetPagination, size: ${POST_PER_PAGE} } }` : ''}
     ) {
       ${QUERY_ARCHIVE_POST}
       pageInfo {
@@ -208,10 +208,14 @@ export async function getArchivePostAndPagenation(postType, offsetPagination) {
   }
   `;
 
-  const data = await fetchAPI(query, { offsetPagination });
-  
+  const variables = {
+    offsetPagination: offsetPagination ?? 0, // デフォルト値を設定
+  };
+
+  const data = await fetchAPI(query, {variables}); // 変数を正しく渡す
   return data;
 }
+
 export async function getArchivePath(postType) {
   const query = `
   query Archives {
