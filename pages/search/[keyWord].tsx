@@ -34,8 +34,6 @@ export default function SearchResult({posts, keyWord, preview}) {
 export const getStaticProps: GetStaticProps = async (context) => {
   const keyWord = context.params.keyWord;
   const data = await getSearchResult(keyWord);
-  console.log({ data });
-  
   return {
     props: {
       posts: data?.posts.edges,
