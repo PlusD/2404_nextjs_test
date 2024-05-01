@@ -5,6 +5,9 @@ const API_URL = process.env.WORDPRESS_API_URL;
 async function fetchAPI(query = "", {variables}: Record<string, any> = {}) {
   const headers = { "Content-Type": "application/json" };
 
+  console.log({ query, variables});
+  
+
   if (process.env.WORDPRESS_AUTH_REFRESH_TOKEN) {
     headers[
       "Authorization"
@@ -209,10 +212,10 @@ export async function getArchivePostAndPagenation(postType, offsetPagination) {
   `;
 
   const variables = {
-    offsetPagination: offsetPagination ?? 0, // デフォルト値を設定
+    offsetPagination: offsetPagination ?? 0,
   };
 
-  const data = await fetchAPI(query, {variables}); // 変数を正しく渡す
+  const data = await fetchAPI(query, {variables});
   return data;
 }
 
@@ -231,5 +234,20 @@ export async function getArchivePath(postType) {
 
   const data = await fetchAPI(query);
   
+  return data;
+}
+
+export async function getSearchResult(keyWord) {
+  const query = `
+  query Search($keyWord: String!) {
+    posts(where: {search: $keyWord}) {
+      ${QUERY_ARCHIVE_POST}
+    }
+  }
+  `;
+  const variables = {
+    keyWord,
+  };
+  const data = await fetchAPI(query, {variables});
   return data;
 }

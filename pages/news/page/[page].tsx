@@ -1,6 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { getArchivePath, getArchivePostAndPagenation } from "../../../lib/api";
-import { POST_TYPE_POSTS } from "../../../lib/constants";
+import { POST_TYPE_NEWS } from "../../../lib/constants";
 import PostPreview from "../../../components/post-preview";
 import Pagenation from "../../../components/pagenation";
 import { POST_PER_PAGE } from "../../../lib/constants";
@@ -30,7 +30,7 @@ export default function Archive({ posts, pageInfo, currentPage, preview }) {
             />
             ))}
           </div>
-          <Pagenation pageInfo={pageInfo} currentPage={currentPage} path={POST_TYPE_POSTS} />
+          <Pagenation pageInfo={pageInfo} currentPage={currentPage} path={POST_TYPE_NEWS} />
         </section>
       </Container>
     </Layout>
@@ -41,9 +41,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const page = context.params?.page ? parseInt(context.params.page as string, 10) : 1; // デフォルトを1に
   const offsetPagination = (page - 1) * POST_PER_PAGE; // ページ数に基づいてオフセットを計算
 
-  const data = await getArchivePostAndPagenation(POST_TYPE_POSTS, offsetPagination);
-  const posts = data[POST_TYPE_POSTS].edges;
-  const pageInfo = data[POST_TYPE_POSTS].pageInfo.offsetPagination;
+  const data = await getArchivePostAndPagenation(POST_TYPE_NEWS, offsetPagination);
+  const posts = data[POST_TYPE_NEWS].edges;
+  const pageInfo = data[POST_TYPE_NEWS].pageInfo.offsetPagination;
 
   return {
     props: {
@@ -57,8 +57,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 };
 
 // export const getStaticPaths: GetStaticPaths = async () => {
-//   const data = await getArchivePath(POST_TYPE_POSTS);
-//   const totalPage = Math.ceil(data[POST_TYPE_POSTS].pageInfo.offsetPagination.total / POST_PER_PAGE);
+//   const data = await getArchivePath(POST_TYPE_NEWS);
+//   const totalPage = Math.ceil(data[POST_TYPE_NEWS].pageInfo.offsetPagination.total / POST_PER_PAGE);
 //   const sequence = Array.from({ length: totalPage }, (_, i) => i + 1);
 
 //   return {

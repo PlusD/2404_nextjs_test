@@ -1,14 +1,16 @@
 import Container from "./container";
 import { EXAMPLE_PATH } from "../lib/constants";
+import Link from "next/link";
 
 export default function Footer() {
   return (
     <footer className="bg-accent-1 border-t border-accent-2">
       <Container>
         <div className="py-28 flex flex-col lg:flex-row items-center">
-          <ul>
-            <li><a href="/">home</a></li>
-            <li><a href="/posts/">posts</a></li>
+          <ul className="flex">
+            <li><Link href="/">home</Link></li>
+            <li><Link href="/posts/">posts</Link></li>
+            <li><Link href="/news/">news</Link></li>
           </ul>
         </div>
         <div className="py-28 flex flex-col lg:flex-row items-center">

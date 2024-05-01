@@ -7,6 +7,7 @@ export const POST_PER_PAGE = 2;
 
 // post_type
 export const POST_TYPE_POSTS = 'posts';
+export const POST_TYPE_NEWS = 'news';
 
 // クエリ
 export const QUERY_ARCHIVE_POST = `edges {

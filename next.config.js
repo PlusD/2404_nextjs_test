@@ -27,6 +27,10 @@ module.exports = {
         source: '/posts',
         destination: '/posts/page/1',
       },
+      {
+        source: '/news',
+        destination: '/news/page/1',
+      },
     ]
   },
 };
